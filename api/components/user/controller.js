@@ -7,11 +7,11 @@ const TABLA = 'user';
 // }
 
 module.exports = function (injectedStore) {
-    // let store = injectdStore;
-    // if (!store) {
-    //     store = require('../../../store/dummy')
-    // }
-    if (!injectedStore) injectedStore = require("../../../store/dummy");
+    let store = injectedStore;
+    if (!store) {
+        store = require('../../../store/dummy')
+    }
+    // if (!injectedStore) injectedStore = require("../../../store/dummy");
 
     // function list() {
     //     return injectedStore.list(TABLA)
@@ -26,10 +26,14 @@ module.exports = function (injectedStore) {
     // 2 o hacer que el list dentro del store sea async , devolviendo una promesa o haciendo async
 
     function list() {
-        return injectedStore.list(TABLA)
+        return store.list(TABLA)
+    }
+    function get(id) {
+        return store.get(TABLA, id)
     }
     return {
-        list
+        list,
+        get,
     }
 }
 // module.exports = {

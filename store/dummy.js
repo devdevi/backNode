@@ -1,7 +1,7 @@
 // aquí vamos a  guardar todo el almacenamiento
 const db = {
     'user': [
-        { id: 1, name: 'Visaka' }
+        { id: '1', name: 'Visaka' }
     ]
 };
 // normal
@@ -15,14 +15,20 @@ async function list(table) {
 };
 
 // Aislar el código de la base de datos
-function get(table, id) {
-    let collection = list(tabla)
+async function get(table, id) {
+    let collection = await list(table)
     return collection.filter(item => item.id === id[0] || null)
 };
-function upsert(table, data) {
+// opcion 1 
+
+async function upsert(table, data) {
     db[collection].push(data)
 };
-function remove(table, id) {
+
+// opcion 2
+async function remove(table, id) {
+    // devolver una nueva promesa
+    // return new Promise(res, req, )
     return true
 };
 
