@@ -15,6 +15,6 @@ exports.error = function(req, res, message,  status) {
     res.status(status).send({
         error: true,
         status,
-        body: MessageChannel,
+        body: message,
     })
 }
