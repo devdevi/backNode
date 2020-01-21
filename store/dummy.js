@@ -4,8 +4,13 @@ const db = {
         { id: 1, name: 'Visaka' }
     ]
 };
-
-function list(table) {
+// normal
+// function list(table) {
+//     return db[table]
+// };
+// async
+// cuando seteamos async  lo convertimos en una promesa
+async function list(table) {
     return db[table]
 };
 
