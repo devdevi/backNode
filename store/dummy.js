@@ -11,7 +11,7 @@ const db = {
 // async
 // cuando seteamos async  lo convertimos en una promesa
 async function list(table) {
-    return db[table]
+    return db[table]  || [];
 };
 
 // Aislar el código de la base de datos
@@ -36,9 +36,19 @@ async function remove(table, id) {
     return true
 };
 
+async function query(table, params) {
+    // const { username } = params;
+    let collection = await list(table)
+    let keys  = Object.keys(params);
+    let key  = keys[0]
+    return collection.filter(item => item[key] === params[key])[0] || null;
+    // return collection.filter(item => item.username === username[0] || null)
+}
+
 module.exports = {
     list,
     get,
     upsert,
     remove,
+    query,
 }
