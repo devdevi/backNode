@@ -1,4 +1,5 @@
 // jwt
+const bcrypt = require('bcrypt')
 const auth = require('../../../auth')
 const TABLA = 'auth';
 
@@ -12,14 +13,24 @@ module.exports = function (injectedStore) {
     // }
     async function login(username, password) {
         const data = await store.query(TABLA, { username });
-        if (data.password === password) {
-            //generar token
-            return auth.sign(data)
-        } else {
-            throw new Error('Invalid Information')
-        }
+
+        return bcrypt.compare(password, data.password)
+            .then((sonIguales) => {
+                if (sonIguales) {
+                    //generar token
+                    return auth.sign(data)
+                } else {
+                    throw new Error('Invalid Information')
+                }
+            })
+        // if (data.password === password) {
+        //     //generar token
+        //     return auth.sign(data)
+        // } else {
+        //     throw new Error('Invalid Information')
+        // }
     }
-    function upsert(data) {
+    async function upsert(data) {
         const { id, username, password } = data
         const authData = {
             id
@@ -29,7 +40,7 @@ module.exports = function (injectedStore) {
             authData.username = username;
         }
         if (password) {
-            authData.password = password;
+            authData.password = await bcrypt.hash(password, 5);
         }
         return store.upsert(TABLA, authData)
     }
