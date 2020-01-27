@@ -16,7 +16,7 @@ router.put('/', upsert);
 
 // Internal Functions
 function list (req, res) {
-    console.log(Controller)
+    // console.log(Controller)
     //  async
     // const lista = Controller.list()
     Controller.list()

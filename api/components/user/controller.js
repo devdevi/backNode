@@ -3,6 +3,9 @@
 // Libreria para generar ids
 const nanoid = require('nanoid');
 
+ // auth
+ const auth = require('../auth/index')
+
 const TABLA = 'user';
 
 // function list() {
@@ -37,17 +40,28 @@ module.exports = function (injectedStore) {
     function get(id) {
         return store.get(TABLA, id)
     }
-    function upsert(body) {
+    async function upsert(body) {
+        const { username, name, id, password } = body
+
         const user = {
-            name: body.name
+            name,
+            username,
         }
         // si viene un id lo usaremos, en caso contrario lo generaremos
-        if (body.id) {
-            user.id = body.id;
+        if (id) {
+            user.id = id;
         } else {
             user.id = nanoid();
         }
-        return store.upsert(TABLA.user)
+        if (password || username) {
+            const  { username, id } = user
+            await auth.upsert({
+                id,
+                username,
+                password: password
+            })
+        }
+        return store.upsert(TABLA, user)
     }
     return {
         list,
