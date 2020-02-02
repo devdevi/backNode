@@ -19,7 +19,7 @@ router.put('/',secure('update'), upsert);
 
 
 // Internal Functions
-function list (req, res, next) {
+function list (req, res) {
     // console.log(Controller)
     //  async
     // const lista = Controller.list()
@@ -35,29 +35,27 @@ function list (req, res, next) {
     // res.send('Todo funciona')
 };
 
-function get (req, res, next) {
+function get (req, res) {
     Controller.get(req.params.id)
     .then((user) => {
         response.success(req, res,  user, 200)
     })
-    .catch(next);
-    // .catch((err) => {
-    //     response.error(req, res, err.message, 500)
-    // })
-    // ;
+    .catch((err) => {
+        response.error(req, res, err.message, 500)
+    })
+    ;
     // response.success(req, res,  lista, 200)
     // res.send('Todo funciona')
 };
 
-function upsert(req, res, next) {
+function upsert(req, res) {
     Controller.upsert(req.body)
     .then((user) => {
         response.success(req, res,  user, 201)
     })
-    .catch(next);
-    // .catch((err) => {
-    //     response.error(req, res, err.message, 500)
-    // })
+    .catch((err) => {
+        response.error(req, res, err.message, 500)
+    })
 };
 
 module.exports = router;
