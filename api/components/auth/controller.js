@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const auth = require('../../../auth')
 const TABLA = 'auth';
 
+const error = require('../../../utils/error')
+
 module.exports = function (injectedStore) {
     let store = injectedStore;
     if (!store) {
@@ -20,7 +22,8 @@ module.exports = function (injectedStore) {
                     //generar token
                     return auth.sign(data)
                 } else {
-                    throw new Error('Invalid Information')
+                    throw error('Invalid Information', 401)
+                    // throw new Error('Invalid Information')
                 }
             })
         // if (data.password === password) {
