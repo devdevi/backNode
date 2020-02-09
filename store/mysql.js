@@ -79,26 +79,24 @@ function update(table, data) {
     });
 }
 function upsert(table, data) {
-    if (!data.newPost ) {
-        console.log('update')
-        return update(table, data)
+    if (data && data.id) {
+        return update(table, data);
     } else {
-        console.log('insert')
-        return insert(table, data)
+        return insert(table, data);
     }
 }
+
 function query(table, query, join) {
     let joinQuery = '';
     if (join) {
         const key = Object.keys(join)[0];
         const val = join[key];
-        joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id `;
-        console.log(joinQuery)
+        joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
     }
+
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM ${table} ${joinQuery}  WHERE ${table}.?`, query, (err, res) => {
+        connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`, query, (err, res) => {
             if (err) return reject(err);
-            console.log(res[0])
             resolve(res[0] || null);
         })
     })

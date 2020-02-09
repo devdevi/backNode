@@ -1,3 +1,4 @@
+const nanoid = require('nanoid');
 const TABLA = 'post';
 
 module.exports = function (injectedStore) {
@@ -11,19 +12,22 @@ module.exports = function (injectedStore) {
     function get(id) {
         return store.get(TABLA, id)
     }
-    function upsert({id = null, user, text, newPost }) {
+    function upsert(data) {
         const post = {
-            text,
-            id,
-            user,
-            newPost
-        }
-        console.log(post)
+			id: data.id,
+			user: data.user,
+			text: data.text,
+		}
+
+		if (!post.id) {
+			post.id = nanoid();
+		}
         return store.upsert(TABLA, post)
     }
 
     function getBy(user) {
-        return store.query(TABLA, {user})
+        console.log(user)
+        return store.query(TABLA, user )
     }
 
     return {
