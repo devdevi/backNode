@@ -25,5 +25,5 @@ app.use('/api/post', post);
 app.use(errors);
 
 app.listen(config.post.port, () => {
-    console.log('post escuchando en el puerto', config.api.port)
+    console.log('Micro servicio post escuchando en el puerto', config.post.port)
 });
