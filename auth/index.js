@@ -8,8 +8,8 @@ const error = require('../utils/error')
 const secret = config.jwt.secret;
 
 function sign(data) {
-    // jwt
-    return jwt.sign(data, secret);
+    let output = JSON.parse(JSON.stringify(data))
+    return jwt.sign(output, secret);
 }
 
 function verify(token) {
@@ -27,6 +27,10 @@ const check = {
 
         // throw new Error('No puedes hacer esto');
     }
+
+    },
+    logged: function (req, owner) {
+       const decoded = decodeHeader(req);
 
     }
 }

@@ -12,6 +12,11 @@ const router = express.Router();
 
 // Separaremos las rutas de las funciones
 router.get('/', list);
+
+// following
+router.post('/follow/:id', secure('follow'), follow);
+router.get('/:id/following', following);
+
 router.get('/:id', get);
 router.post('/', upsert);
 router.put('/',secure('update'), upsert);
@@ -59,5 +64,16 @@ function upsert(req, res, next) {
     //     response.error(req, res, err.message, 500)
     // })
 };
+function follow(req, res, next) {
+    return Controller.follow(req.user.id, req.params.id)
+        .then(data => response.success(req, res, data, 201))
+        .catch(next)
+}
+
+function following(req, res, next) {
+    return Controller.following(req.params.id)
+        .then(data => response.success(req, res, data, 201))
+        .catch(next)
+}
 
 module.exports = router;

@@ -7,19 +7,21 @@ const error = require('../../../utils/error')
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
-    if (!store) {
-        store = require('../../../store/dummy')
-    }
+    console.log(injectedStore)
+    // if (!store) {
+    //     store = require('../../../store/dummy')
+    // }
     // function list() {
     //     return store.list(TABLA)
     // }
     async function login(username, password) {
         const data = await store.query(TABLA, { username });
-
+        console.log(data)
         return bcrypt.compare(password, data.password)
             .then((sonIguales) => {
                 if (sonIguales) {
                     //generar token
+                    console.log(auth.sign(data))
                     return auth.sign(data)
                 } else {
                     throw error('Invalid Information', 401)
