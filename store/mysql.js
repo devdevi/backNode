@@ -53,25 +53,37 @@ function get(table, id) {
     });
 }
 function insert(table, data) {
+    const post = {
+        id: data.id,
+        text: data.text,
+        user: data.user,
+    }
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO ${table} SET ?`, data, (err, result) => {
+        connection.query(`INSERT INTO ${table} SET ?`, post, (err, result) => {
             if (err) return reject(err);
             resolve(result);
         })
     });
 }
 function update(table, data) {
+    const post = {
+        id: data.id,
+        text: data.text,
+        user: data.user,
+    }
     return new Promise((resolve, reject) => {
-        connection.query(`UPDATE ${table} SET ? WHERE id=? `, [data, data.id], (err, result) => {
+        connection.query(`UPDATE ${table} SET ? WHERE id=? `, [post, post.id], (err, result) => {
             if (err) return reject(err);
             resolve(result);
         })
     });
 }
 function upsert(table, data) {
-    if (data && data.id) {
+    if (!data.newPost ) {
+        console.log('update')
         return update(table, data)
     } else {
+        console.log('insert')
         return insert(table, data)
     }
 }
